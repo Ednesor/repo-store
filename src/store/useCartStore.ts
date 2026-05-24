@@ -25,8 +25,8 @@ const mismaPersonalizacion = (p1: number[] = [], p2: number[] = []): boolean => 
   if (p1.length !== p2.length) return false
 
   //Ordena los arrays para que no importe el orden en que se agreguen los ingredientes
-  const sorted1 = [...p1].sort()
-  const sorted2 = [...p2].sort()
+  const sorted1 = [...p1].sort() 
+  const sorted2 = [...p2].sort() 
 
   // Compara si son iguales
   return sorted1.every((val, index) => val === sorted2[index])

@@ -40,8 +40,8 @@ export interface Producto {
   disponible: boolean;
   
   // Relaciones (dependiendo del endpoint, podrían venir populadas)
-  categoria?: Categoria[];
-  ingredientes?: ProductoIngrediente[];
+  categorias?: Categoria[];
+  ingredientes?: Ingrediente[];
   unidad_venta?: UnidadMedida;
 }
 
@@ -53,12 +53,26 @@ export interface PedidoItem {
   subtotal: number;
 }
 
+export interface DetallePedidoRead {
+  pedido_id: number;
+  producto_id: number;
+  cantidad: number;
+  nombre_snapshot: string;
+  precio_snapshot: number;
+  subtotal_snapshot: number;
+  personalizacion?: number[] | null;
+  created_at: string;
+}
+
 export interface Pedido {
-  id: string;
-  nombre: string;
-  direccion: string;
-  telefono: string;
-  items: PedidoItem[];
+  id: number;
+  estado_codigo: string;
+  forma_pago_codigo: string;
+  subtotal: number;
+  descuento: number;
+  costo_envio: number;
   total: number;
-  fecha: string;
+  notas: string | null;
+  created_at: string;
+  items: DetallePedidoRead[];
 }

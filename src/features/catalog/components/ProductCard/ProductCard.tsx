@@ -1,4 +1,4 @@
-import type { Producto } from "../../../shared/types/domain.types";
+import type { Producto } from "../../../../shared/types/domain.types";
 
 interface ProductCardProps {
     producto: Producto;
@@ -21,7 +21,7 @@ export default function ProductCard({ producto, cantidadEnCarrito, onSelect }: P
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     src={imagen}
                 />
-                
+
                 {/* Etiqueta Opcional */}
                 {producto.disponible && (
                     <div className="absolute top-3 left-3 flex flex-col gap-2">
@@ -30,29 +30,29 @@ export default function ProductCard({ producto, cantidadEnCarrito, onSelect }: P
                         </span>
                     </div>
                 )}
-                
+
                 <button
                     aria-label="Add to Favorites"
-                    className="absolute top-3 right-3 p-2 bg-surface/80 backdrop-blur rounded-full text-on-surface hover:text-primary hover:bg-surface transition-all opacity-0 group-hover:opacity-100 shadow-sm"
+                    className="absolute top-3 right-3 p-2 bg-surface/80 backdrop-blur rounded-full text-on-surface hover:text-primary hover:bg-surface transition-all opacity-0 group-hover:opacity-100 shadow-sm cursor-pointer"
                     onClick={(e) => e.stopPropagation()} // Prevenir que abra el modal
                 >
                     <span className="material-symbols-outlined text-[20px]">favorite_border</span>
                 </button>
             </div>
-            
+
             <div className="p-4 flex flex-col flex-grow">
                 <div className="text-label-md font-label-md text-on-surface-variant mb-1">
-                    {producto.categoria?.[0]?.nombre || 'Categoría'}
+                    {producto.categorias?.[0]?.nombre || 'Categoría'}
                 </div>
                 <h3 className="text-body-lg font-headline-md font-semibold text-on-surface mb-2 leading-tight">
                     {producto.nombre}
                 </h3>
-                
+
                 <div className="mt-auto flex items-center justify-between pt-4">
                     <div className="text-body-md font-body-md font-medium text-on-surface">
                         <span className="text-on-surface-variant text-sm">$</span>{producto.precio_base}
                     </div>
-                    
+
                     <button
                         aria-label="Add to Cart"
                         disabled={sinStock}
@@ -60,10 +60,10 @@ export default function ProductCard({ producto, cantidadEnCarrito, onSelect }: P
                             e.stopPropagation(); // Evitar abrir el modal
                             if (!sinStock) onSelect(producto);
                         }}
-                        className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors shadow-sm ${sinStock
+                        className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors shadow-sm cursor-pointer ${sinStock
                             ? 'bg-surface-variant text-on-surface-variant cursor-not-allowed'
                             : 'bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container'
-                        }`}
+                            }`}
                     >
                         <span className="material-symbols-outlined text-[18px]">add</span>
                     </button>

@@ -114,6 +114,16 @@ body {
   font-variation-settings: 'FILL' 1;
 }
 
+@layer base {
+  button, select, [role="button"], label {
+    cursor: pointer;
+  }
+  
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
 /* Custom scrollbar para futuros filtros u overlays */
 .filter-scroll::-webkit-scrollbar { width: 4px; }
 .filter-scroll::-webkit-scrollbar-track { background: transparent; }

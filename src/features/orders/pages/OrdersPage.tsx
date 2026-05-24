@@ -1,5 +1,5 @@
 import { useOrders } from '../hooks/useOrders';
-import OrdersTable from '../components/OrdersTable';
+import OrdersTable from '../components/OrdersTable/OrdersTable';
 
 export default function OrdersPage() {
   const { data: pedidos, isLoading, isError } = useOrders();
@@ -7,7 +7,7 @@ export default function OrdersPage() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64 text-on-surface-variant">
-         <span className="material-symbols-outlined text-[48px] animate-spin">sync</span>
+        <span className="material-symbols-outlined text-[48px] animate-spin">sync</span>
       </div>
     );
   }
@@ -27,7 +27,7 @@ export default function OrdersPage() {
         <h1 className="text-headline-xl-mobile md:text-headline-xl font-headline-xl-mobile md:font-headline-xl text-on-surface">Mis Pedidos</h1>
         <p className="text-body-md font-body-md text-on-surface-variant mt-2">Historial de órdenes procesadas en el sistema.</p>
       </div>
-      
+
       <OrdersTable pedidos={pedidos || []} />
     </div>
   );

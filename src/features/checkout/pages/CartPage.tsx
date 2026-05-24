@@ -1,8 +1,8 @@
-import { useCartStore, getCantidadDeProducto, getTotalItems } from '../../../store/useCartStore';
+import { useCartStore, getCantidadDeProducto, getTotalItems} from '../../../store/useCartStore';
 import { useNavigate } from 'react-router-dom';
 
 export default function CartPage() {
-  const { items, removeItem, total, updateQuantity } = useCartStore();
+  const { items, removeItem, total, updateQuantity, clearCart } = useCartStore();
   const navigate = useNavigate();
   const totalItems = getTotalItems(items);
 
@@ -21,8 +21,8 @@ export default function CartPage() {
           <p className="mt-4 text-body-lg text-on-surface-variant text-center py-10">Tu carrito está vacío</p>
         ) : (
           items.map((item) => {
-             const imagen = item.producto.imagenes_url?.[0] || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=500&auto=format&fit=crop';
-             return (
+            const imagen = item.producto.imagenes_url?.[0] || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=500&auto=format&fit=crop';
+            return (
               <div key={item.producto.id + item.personalizacion.join('-')} className="flex flex-col sm:flex-row gap-gutter py-md border-b border-outline-variant">
                 <div className="w-full sm:w-32 h-32 flex-shrink-0 bg-surface-container-low rounded-lg overflow-hidden border border-outline-variant">
                   <img alt={item.producto.nombre} className="w-full h-full object-cover" src={imagen} />
@@ -34,6 +34,16 @@ export default function CartPage() {
                       <p className="text-body-sm font-body-sm text-on-surface-variant mt-1">
                           {item.producto.descripcion.substring(0, 60)}...
                       </p>
+                      {/*muestra los ingredientes que se le sacaron al producto*/}
+                      {item.personalizacion.length > 0 && (
+                        <p className="text-body-sm font-body-sm text-error mt-1 flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[14px]">remove_circle_outline</span>
+                          Sin: {item.personalizacion
+                            .map(id => item.producto.ingredientes?.find(i => i.id === id)?.nombre)
+                            .filter(Boolean)
+                            .join(', ')}
+                        </p>
+                      )}
                     </div>
                     <p className="text-headline-md font-headline-md text-on-surface font-semibold">${item.subtotal}</p>
                   </div>
@@ -63,7 +73,7 @@ export default function CartPage() {
                   </div>
                 </div>
               </div>
-             );
+            );
           })
         )}
       </div>
@@ -96,6 +106,13 @@ export default function CartPage() {
           >
             Proceed to Checkout
             <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
+          </button>
+          <button
+            className="w-full bg-primary-container text-on-primary text-label-md font-label-md py-3 rounded-lg hover:bg-primary transition-colors flex justify-center items-center gap-2 disabled:bg-surface-variant disabled:text-on-surface-variant disabled:cursor-not-allowed mt-5"
+            onClick={() => clearCart()}
+          >
+            Limpiar carrito
+            <span className="material-symbols-outlined text-[20px]">delete</span>
           </button>
           <p className="text-center text-body-sm font-body-sm text-outline mt-sm">
             Secure checkout powered by Retail Precision

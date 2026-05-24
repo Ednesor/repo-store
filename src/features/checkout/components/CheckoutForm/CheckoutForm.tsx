@@ -1,13 +1,18 @@
 import { useForm } from '@tanstack/react-form';
-import { useCheckout } from '../hooks/useCheckout';
-import { useCartStore } from '../../../store/useCartStore';
+import { useCheckout } from '../../hooks/useCheckout';
+import { useCartStore } from '../../../../store/useCartStore';
 
 interface CheckoutFormProps {
     onSuccess: () => void;
 }
 
+
+/*
+hardcodeamos el efectivo y direccion en null por el momento 
+luego con el tiempo se agregarán los pagos y direcciones del usuario
+*/
 export default function CheckoutForm({ onSuccess }: CheckoutFormProps) {
-    const { items, total } = useCartStore();
+    const { items } = useCartStore();
     const checkoutMutation = useCheckout();
 
     const form = useForm({
@@ -17,11 +22,17 @@ export default function CheckoutForm({ onSuccess }: CheckoutFormProps) {
             telefono: '',
         },
         onSubmit: async ({ value }) => {
+            const notas_cliente = `Nombre: ${value.nombre} | Dirección: ${value.direccion} | Tel: ${value.telefono}`;
+            
             const pedido = {
-                ...value,
-                items,
-                total,
-                fecha: new Date().toISOString()
+                direccion_id: null,
+                forma_pago_codigo: 'EFECTIVO',
+                notas: notas_cliente,
+                items: items.map(item => ({
+                    producto_id: item.producto.id,
+                    cantidad: item.cantidad,
+                    personalizacion: item.personalizacion.length > 0 ? item.personalizacion : null
+                }))
             };
 
             checkoutMutation.mutate(pedido, {
@@ -173,6 +184,7 @@ export default function CheckoutForm({ onSuccess }: CheckoutFormProps) {
                             </>
                         )}
                     </button>
+                    
                 )}
             />
         </form>
