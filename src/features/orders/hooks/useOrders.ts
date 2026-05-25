@@ -15,6 +15,19 @@ export function useOrders() {
     });
 }
 
+export function useOrderById(id: string) {
+    return useQuery<Pedido>({
+        queryKey: ['pedidos', id],
+        queryFn: async () => {
+            const { data } = await api.get(`/pedidos/${id}`, {
+                params: { usuario_id: 1 }
+            });
+            return data;
+        },
+        enabled: !!id, // Solo se ejecuta si el id existe
+    });
+}
+
 export function useCancelOrder() {
     const queryClient = useQueryClient();
 
