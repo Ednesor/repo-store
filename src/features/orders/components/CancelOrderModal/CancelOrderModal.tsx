@@ -69,7 +69,7 @@ export default function CancelOrderModal({ pedidoId, onClose, onConfirm, isPendi
                         <button
                             onClick={onClose}
                             disabled={isPending}
-                            className="px-4 py-2 rounded-lg text-primary hover:bg-primary-container font-medium transition-colors"
+                            className="text-orange-600 hover:bg-orange-100 px-4 py-1.5 rounded-lg transition-colors font-bold text-sm tracking-wide"
                         >
                             Volver
                         </button>
