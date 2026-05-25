@@ -1,5 +1,7 @@
 # Retail Precision - Store App (Parcial 2 - PROG4)
 
+> 🎥 **Video de Presentación:** LINK DE YOUTUBE [ > ENTRA ACÁ <](https://youtu.be/oqgT0LUqdwQ)
+
 Aplicación web e-commerce completa con arquitectura orientada a features y diseño *premium* responsivo. Construida con React, TypeScript y Tailwind CSS v4.
 
 ## Funcionalidades Principales
@@ -9,6 +11,7 @@ Aplicación web e-commerce completa con arquitectura orientada a features y dise
 - **Carrito de Compras (Zustand)**: Gestión global de estado para el carrito, calculando totales, subtotales y controlando stock máximo disponible.
 - **Checkout Seguro**: Formulario de finalización de compra con validaciones (TanStack Form) e integración directa con el servidor.
 - **Historial de Pedidos**: Tabla estructurada para la visualización del histórico de compras del cliente.
+- **Detalles Dinámicos**: Rutas paramétricas con React Router para visualizar el snapshot inmutable de cada compra y cruce de caché para nombres de ingredientes removidos.
 
 ## Requisitos Previos
 
@@ -32,10 +35,10 @@ Copia el archivo de ejemplo y ajusta la URL de la API:
 cp .env.example .env
 ```
 
-Edita `.env` con la URL de tu backend:
+Edita `.env` con la URL de tu backend (si no lo creás, el sistema hará un fallback inteligente a `localhost:8000`):
 
 ```env
-VITE_API_URL=http://localhost:3000
+VITE_API_URL=http://localhost:8000
 ```
 
 ## Desarrollo
