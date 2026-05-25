@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   createColumnHelper,
   flexRender,
@@ -6,7 +7,6 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import type { Pedido } from '../../../../shared/types/domain.types';
-import OrderDetailsModal from '../OrderDetailsModal/OrderDetailsModal';
 import CancelOrderModal from '../CancelOrderModal/CancelOrderModal';
 import { useCancelOrder } from '../../hooks/useOrders';
 
@@ -15,7 +15,7 @@ interface OrdersTableProps {
 }
 
 export default function OrdersTable({ pedidos }: OrdersTableProps) {
-  const [selectedPedido, setSelectedPedido] = useState<Pedido | null>(null);
+  const navigate = useNavigate();
   const [pedidoToCancel, setPedidoToCancel] = useState<number | null>(null);
   const cancelOrderMutation = useCancelOrder();
   const columnHelper = createColumnHelper<Pedido>();
@@ -53,7 +53,7 @@ export default function OrdersTable({ pedidos }: OrdersTableProps) {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                setSelectedPedido(pedido);
+                navigate(`/pedidos/${pedido.id}`);
               }}
               className="text-orange-600 hover:bg-orange-100 px-4 py-1.5 rounded-lg transition-colors font-bold text-sm tracking-wide"
               title="Ver Detalles"
@@ -123,10 +123,7 @@ export default function OrdersTable({ pedidos }: OrdersTableProps) {
           </tbody>
         </table>
       </div>
-      <OrderDetailsModal
-        pedido={selectedPedido}
-        onClose={() => setSelectedPedido(null)}
-      />
+
       <CancelOrderModal
         key={pedidoToCancel || 'closed'}
         pedidoId={pedidoToCancel}

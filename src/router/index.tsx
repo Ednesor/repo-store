@@ -3,6 +3,7 @@ import CatalogPage from '../features/catalog/pages/CatalogPage'
 import CartPage from '../features/checkout/pages/CartPage'
 import CheckoutPage from '../features/checkout/pages/CheckoutPage';
 import OrdersPage from '../features/orders/pages/OrdersPage';
+import OrderDetailPage from '../features/orders/pages/OrderDetailPage';
 
 import Navbar from '../shared/components/navbar'
 import Footer from '../shared/components/Footer'
@@ -17,6 +18,7 @@ export default function Router() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/mis-pedidos" element={<OrdersPage />} />
+          <Route path="/pedidos/:id" element={<OrderDetailPage />} />
         </Routes>
       </main>
       <Footer />
