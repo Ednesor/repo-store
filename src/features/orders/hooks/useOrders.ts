@@ -6,10 +6,7 @@ export function useOrders() {
     return useQuery<Pedido[]>({
         queryKey: ['pedidos'],
         queryFn: async () => {
-            const { data } = await api.get('/pedidos/', {
-                params: { usuario_id: 1 }
-            });
-            // Ordenamos los pedidos para que los más recientes aparezcan primero
+            const { data } = await api.get('/pedidos/mis-pedidos');
             return data.sort((a: Pedido, b: Pedido) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
         }
     });
@@ -19,12 +16,10 @@ export function useOrderById(id: string) {
     return useQuery<Pedido>({
         queryKey: ['pedidos', id],
         queryFn: async () => {
-            const { data } = await api.get(`/pedidos/${id}`, {
-                params: { usuario_id: 1 }
-            });
+            const { data } = await api.get(`/pedidos/mis-pedidos/${id}`);
             return data;
         },
-        enabled: !!id, // Solo se ejecuta si el id existe
+        enabled: !!id,
     });
 }
 
@@ -33,9 +28,8 @@ export function useCancelOrder() {
 
     return useMutation({
         mutationFn: async ({ pedidoId, motivo }: { pedidoId: number; motivo: string }) => {
-            const response = await api.patch(`/pedidos/${pedidoId}/estado`, 
-                { estado_hacia: 'CANCELADO', motivo },
-                { params: { usuario_id: 1 } }
+            const response = await api.patch(`/pedidos/mis-pedidos/${pedidoId}/cancelar`, 
+                { estado_hacia: 'CANCELADO', motivo }
             );
             return response.data;
         },
