@@ -80,6 +80,7 @@ export default function OrdersTable({ pedidos }: OrdersTableProps) {
     })
   ];
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: pedidos,
     columns,

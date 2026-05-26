@@ -1,9 +1,10 @@
-import axios from 'axios'
+import axios, { AxiosError, type AxiosResponse } from 'axios'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1',
   headers: {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
   },
   withCredentials: true,
   /*
@@ -28,11 +29,14 @@ api.interceptors.request.use(
   }
 )
 
-api.interceptors.response.use((response) => {
+api.interceptors.response.use((response: AxiosResponse) => {
   return response;
-}, (error) => {
+}, async (error: AxiosError) => {
   if (error.response?.status === 401) {
-    console.error("El token ya no es válido");
+    console.error("Sesion expirada (401), por favor inicia sesión nuevamente");
+    // TODO: agregar redireccion al login por el tema de las cookies. 
+    // TODO: Verificar el tema si se cierra sesion o se cambia de usuario. 
+    
   }
   return Promise.reject(error);
 })
