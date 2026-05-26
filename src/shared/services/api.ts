@@ -1,10 +1,11 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
   /*
   Axio devolvia "?categoria_ids[]=1&categoria_ids[]=2."
   y el backend esperaba "categoria_ids=1&categoria_ids=2."

@@ -26,10 +26,7 @@ export function useCheckout() {
 
   return useMutation({
     mutationFn: async (pedido: PedidoPayload) => {
-      // Mandamos usuario_id=1 temporalmente
-      const response = await api.post('/pedidos/', pedido, {
-        params: { usuario_id: 1 }
-      });
+      const response = await api.post('/pedidos/', pedido);
       return response.data;
     },
     onSuccess: (data) => {
@@ -37,17 +34,14 @@ export function useCheckout() {
       // Acá invalidamos el caché 
       queryClient.invalidateQueries({ queryKey: ['pedidos'] });
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       console.error('Hubo un error al guardar el pedido:', error);
       
       let errorMessage = 'Lo sentimos, hubo un problema al procesar tu orden. Intentá de nuevo.';
       
-      // El backend customizó los errores y ahora devuelve { mensaje: "...", codigo: 400 }
       if (error.response?.data?.mensaje) {
         errorMessage = error.response.data.mensaje;
       } else if (error.response?.data?.detail) {
-        // Fallback por si en algún endpoint no saltó el custom handler
         if (typeof error.response.data.detail === 'string') {
           errorMessage = error.response.data.detail;
         } else if (Array.isArray(error.response.data.detail)) {
