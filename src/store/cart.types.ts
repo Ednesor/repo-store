@@ -16,4 +16,7 @@ export interface CartState {
   removeItem: (productoId: number, personalizacion?: number[]) => void;
   updateQuantity: (productoId: number, cantidad: number, personalizacion?: number[]) => void;
   clearCart: () => void;
+  
+  getTotalItems: () => number;
+  getCantidadDeProducto: (productoId: number) => number;
 }

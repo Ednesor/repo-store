@@ -8,17 +8,7 @@ const calcularTotal = (items: CartItem[]): number => {
   return items.reduce((suma, item) => suma + item.subtotal, 0)
 }
 
-// ======Calcula la cantidad total sumando las cantidades de todos los items======
-export const getTotalItems = (items: CartItem[]): number => {
-  return items.reduce((suma, item) => suma + item.cantidad, 0);
-}
 
-// ======Calcula la cantidad de un producto específico sumando las cantidades de todos los items======
-export const getCantidadDeProducto = (items: CartItem[], productoId: number): number => {
-  return items
-    .filter((item) => item.producto.id === productoId)
-    .reduce((suma, item) => suma + item.cantidad, 0);
-}
 
 // ======Compara dos arrays de personalización.======
 const mismaPersonalizacion = (p1: number[] = [], p2: number[] = []): boolean => {
@@ -41,7 +31,7 @@ const mismaPersonalizacion = (p1: number[] = [], p2: number[] = []): boolean => 
 export const useCartStore = create<CartState>()(
 
   persist(
-    (set) => ({
+    (set, get) => ({
       // Estado Inicial
       items: [],
       total: 0,
@@ -119,6 +109,19 @@ export const useCartStore = create<CartState>()(
 
       // Limpiar todo
       clearCart: () => set({ items: [], total: 0 }),
+
+      // Métodos de obtención de datos (Getters)
+      getTotalItems: () => {
+        const { items } = get();
+        return items.reduce((suma, item) => suma + item.cantidad, 0);
+      },
+
+      getCantidadDeProducto: (productoId) => {
+        const { items } = get();
+        return items
+          .filter((item) => item.producto.id === productoId)
+          .reduce((suma, item) => suma + item.cantidad, 0);
+      },
     }),
     {
       name: 'cart-storage'
