@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Producto } from '../../../../shared/types/domain.types';
-import { useCartStore, getCantidadDeProducto } from '../../../../store/useCartStore';
+import { useCartStore } from '../../../../store/useCartStore';
 import Modal from '../../../../shared/components/Modal';
 
 interface ProductModalProps {
@@ -36,16 +36,16 @@ export default function ProductModal({ producto, onClose, onAddToCart }: Product
     const [cantidad, setCantidad] = useState(1);
     const [ingredientesRemovidos, setIngredientesRemovidos] = useState<number[]>([]);
 
-    const itemsCarrito = useCartStore(state => state.items);
+    const getCantidadDeProducto = useCartStore(state => state.getCantidadDeProducto);
 
     // Si no hay producto, el modal no se renderiza (retorna null)
     if (!producto) return null;
 
-    // OJO: El backend actual no devuelve `es_removible`, así que mostramos todos por ahora
-    const ingredientesRemovibles = producto.ingredientes || [];
+    // Ahora usamos es_removible que provee el backend
+    const ingredientesRemovibles = producto.ingredientes?.filter(ing => ing.es_removible) || [];
 
     // Calculamos cuántos ya llevó, para saber el límite real que le podemos vender ahora
-    const cantidadYaEnCarrito = getCantidadDeProducto(itemsCarrito, producto.id);
+    const cantidadYaEnCarrito = getCantidadDeProducto(producto.id);
     const stockDisponible = producto.stock_cantidad - cantidadYaEnCarrito;
     const sinStock = stockDisponible <= 0;
 

@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { useCartStore, getTotalItems } from '../../store/useCartStore';
+import { useCartStore } from '../../store/useCartStore';
 
 export default function Navbar() {
-    const items = useCartStore((state) => state.items);
-    const totalItems = getTotalItems(items);
+    useCartStore((state) => state.items);
+    const getTotalItems = useCartStore((state) => state.getTotalItems);
+    const totalItems = getTotalItems();
 
     return (
         <header className="fixed top-0 left-0 right-0 z-50 w-full bg-surface/95 backdrop-blur-md border-b border-outline-variant">

@@ -1,5 +1,5 @@
 import { useCatalogProducts } from '../hooks/useCatalogProducts';
-import { useCartStore, getCantidadDeProducto } from '../../../store/useCartStore';
+import { useCartStore } from '../../../store/useCartStore';
 import ProductCard from '../components/ProductCard/ProductCard';
 import { useState } from 'react';
 import type { Producto } from '../../../shared/types/domain.types';
@@ -13,7 +13,8 @@ export default function CatalogPage() {
 
   const { data: categorias = [] } = useCategorias();
   const { data: productos = [], isLoading, isError } = useCatalogProducts(categoriasSeleccionadas);
-  const items = useCartStore((state) => state.items);
+  useCartStore((state) => state.items);
+  const getCantidadDeProducto = useCartStore((state) => state.getCantidadDeProducto);
   const addItem = useCartStore((state) => state.addItem);
 
   // null significa que el modal está cerrado. 
@@ -65,7 +66,7 @@ export default function CatalogPage() {
             <ProductCard
               key={p.id}
               producto={p}
-              cantidadEnCarrito={getCantidadDeProducto(items, p.id)}
+              cantidadEnCarrito={getCantidadDeProducto(p.id)}
               onSelect={() => setOpenModal(p)}
             />
           ))}

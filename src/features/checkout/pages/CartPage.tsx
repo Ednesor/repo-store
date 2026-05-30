@@ -1,10 +1,13 @@
-import { useCartStore, getCantidadDeProducto, getTotalItems} from '../../../store/useCartStore';
+import { useCartStore } from '../../../store/useCartStore';
 import { useNavigate } from 'react-router-dom';
 
 export default function CartPage() {
   const { items, removeItem, total, updateQuantity, clearCart } = useCartStore();
+  const getTotalItems = useCartStore((state) => state.getTotalItems);
+  const getCantidadDeProducto = useCartStore((state) => state.getCantidadDeProducto);
+  
   const navigate = useNavigate();
-  const totalItems = getTotalItems(items);
+  const totalItems = getTotalItems();
 
   const subtotal = total; 
   const finalTotal = subtotal; 
@@ -58,7 +61,7 @@ export default function CartPage() {
                       <span className="px-3 h-full flex items-center text-label-md font-label-md text-on-surface border-x border-outline-variant min-w-[40px] justify-center">{item.cantidad}</span>
                       <button 
                         onClick={() => updateQuantity(item.producto.id, item.cantidad + 1, item.personalizacion)}
-                        disabled={getCantidadDeProducto(items, item.producto.id) >= item.producto.stock_cantidad}
+                        disabled={getCantidadDeProducto(item.producto.id) >= item.producto.stock_cantidad}
                         className="px-3 h-full flex items-center text-on-surface-variant hover:bg-surface-container-low transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <span className="material-symbols-outlined text-[18px]">add</span>
