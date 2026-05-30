@@ -34,6 +34,8 @@ export function useCheckout() {
       // Acá invalidamos el caché 
       queryClient.invalidateQueries({ queryKey: ['pedidos'] });
     },
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (error: any) => {
       console.error('Hubo un error al guardar el pedido:', error);
       
