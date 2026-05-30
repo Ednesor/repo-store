@@ -10,6 +10,7 @@ export interface Ingrediente {
   nombre: string;
   descripcion: string;
   es_alergeno: boolean;
+  es_removible?: boolean;
 }
 
 export interface ProductoIngrediente {
