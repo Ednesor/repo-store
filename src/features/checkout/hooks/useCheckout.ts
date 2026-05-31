@@ -26,32 +26,27 @@ export function useCheckout() {
 
   return useMutation({
     mutationFn: async (pedido: PedidoPayload) => {
-      const response = await api.post('/pedidos/', pedido);
-      return response.data;
+      try {
+        const response = await api.post('/pedidos/publico', pedido);
+        return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        let errorMessage = 'Lo sentimos, hubo un problema al procesar tu orden. Intentá de nuevo.';
+        if (error.response?.data?.mensaje) {
+          errorMessage = error.response.data.mensaje;
+        } else if (error.response?.data?.detail) {
+          if (typeof error.response.data.detail === 'string') {
+            errorMessage = error.response.data.detail;
+          } else if (Array.isArray(error.response.data.detail)) {
+            errorMessage = error.response.data.detail[0].msg;
+          }
+        }
+        throw new Error(errorMessage, { cause: error });
+      }
     },
-    onSuccess: (data) => {
-      console.log('Pedido guardado en la base de datos:', data);
+    onSuccess: () => {
       // Acá invalidamos el caché 
       queryClient.invalidateQueries({ queryKey: ['pedidos'] });
-    },
-    
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onError: (error: any) => {
-      console.error('Hubo un error al guardar el pedido:', error);
-      
-      let errorMessage = 'Lo sentimos, hubo un problema al procesar tu orden. Intentá de nuevo.';
-      
-      if (error.response?.data?.mensaje) {
-        errorMessage = error.response.data.mensaje;
-      } else if (error.response?.data?.detail) {
-        if (typeof error.response.data.detail === 'string') {
-          errorMessage = error.response.data.detail;
-        } else if (Array.isArray(error.response.data.detail)) {
-          errorMessage = error.response.data.detail[0].msg;
-        }
-      }
-
-      alert(errorMessage);
     }
   });
 }

@@ -163,6 +163,11 @@ export default function CheckoutForm({ onSuccess }: CheckoutFormProps) {
                 )}
             />
 
+            {checkoutMutation.isError && (
+                <div className="p-3 bg-error/10 border border-error/20 rounded-lg text-error text-body-sm mt-2 mb-2">
+                    {checkoutMutation.error instanceof Error ? checkoutMutation.error.message : 'Error al procesar el pedido'}
+                </div>
+            )}
             {/* Usamos Subscribe para que el botón escuche los cambios de estado del form */}
             <form.Subscribe
                 selector={(state) => [state.canSubmit, state.isSubmitting]}
