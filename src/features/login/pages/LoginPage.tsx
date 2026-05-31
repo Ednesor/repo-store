@@ -13,8 +13,7 @@ export default function LoginPage() {
         formData.append('password', values.password);
 
         loginMutation.mutate(formData, {
-            onSuccess: () => navigate('/'),
-            onError: () => alert("Credenciales incorrectas")
+            onSuccess: () => navigate('/')
         });
     };
 
@@ -31,6 +30,12 @@ export default function LoginPage() {
                     <h1 className="font-headline-lg text-headline-lg text-on-surface mb-2">Welcome Back</h1>
                     <p className="font-body-md text-body-md text-on-surface-variant">Sign in</p>
                 </div>
+                
+                {loginMutation.isError && (
+                    <div className="mb-4 p-3 bg-error/10 border border-error/20 rounded-lg text-error text-body-sm text-center">
+                        Credenciales incorrectas. Intentá de nuevo.
+                    </div>
+                )}
                 
                 <LoginForm 
                     onSubmit={handleLogin} 

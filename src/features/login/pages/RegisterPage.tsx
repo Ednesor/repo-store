@@ -9,8 +9,7 @@ export default function RegisterPage() {
 
     const handleRegister = (values: RegisterPayload) => {
         registerMutation.mutate(values, {
-            onSuccess: () => navigate('/login'),
-            onError: () => alert("Error al registrarse")
+            onSuccess: () => navigate('/login')
         });
     };
 
@@ -31,6 +30,12 @@ export default function RegisterPage() {
                             <h1 className="font-headline-lg text-headline-lg text-on-surface mb-2">Begin Your Journey</h1>
                             <p className="font-body-md text-body-md text-on-surface-variant">Join our community of gourmet artisans and curators.</p>
                         </div>
+                        
+                        {registerMutation.isError && (
+                            <div className="mb-4 p-3 bg-error/10 border border-error/20 rounded-lg text-error text-body-sm text-center">
+                                Error al registrarse. Verificá los datos e intentá de nuevo.
+                            </div>
+                        )}
                         
                         <RegisterForm 
                             onSubmit={handleRegister} 
