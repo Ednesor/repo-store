@@ -12,7 +12,7 @@ export default function OrderDetailsModal({ pedido, onClose }: OrderDetailsModal
     return (
         <Modal isOpen={!!pedido} onClose={onClose} className="max-w-2xl">
             <div className="flex flex-col h-full bg-surface">
-                {/* Header */}
+
                 <div className="flex justify-between items-center p-6 border-b border-outline-variant bg-surface-container-low">
                     <div>
                         <h2 className="text-headline-sm font-semibold text-on-surface">Detalle del Pedido #{pedido.id}</h2>
@@ -25,10 +25,10 @@ export default function OrderDetailsModal({ pedido, onClose }: OrderDetailsModal
                     </button>
                 </div>
 
-                {/* Content */}
+
                 <div className="p-6 overflow-y-auto flex-grow flex flex-col gap-6">
 
-                    {/* Status & Payment info */}
+
                     <div className="flex justify-between items-center bg-surface-variant/30 p-4 rounded-lg border border-outline-variant">
                         <div>
                             <p className="text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Estado</p>
@@ -40,7 +40,6 @@ export default function OrderDetailsModal({ pedido, onClose }: OrderDetailsModal
                         </div>
                     </div>
 
-                    {/* Items List */}
                     <div>
                         <h3 className="text-title-md font-semibold text-on-surface mb-4">Productos</h3>
                         <ul className="flex flex-col gap-4">
@@ -55,11 +54,18 @@ export default function OrderDetailsModal({ pedido, onClose }: OrderDetailsModal
                                         <p className="text-body-sm text-on-surface-variant">
                                             Precio unitario: ${item.precio_snapshot}
                                         </p>
-                                        {/* Show customization logic if present */}
-                                        {item.personalizacion && item.personalizacion.length > 0 && (
-                                            <p className="text-label-sm text-error mt-1">
-                                                Ingredientes removidos: {item.personalizacion.length}
-                                            </p>
+
+                                        {item.personalizacion_snapshot && item.personalizacion_snapshot.length > 0 && (
+                                            <div className="mt-1">
+                                                <p className="text-label-sm text-error font-semibold">
+                                                    Sin:
+                                                </p>
+                                                <ul className="text-body-sm text-error/80 pl-2 list-disc list-inside">
+                                                    {item.personalizacion_snapshot.map((ing, iIdx) => (
+                                                        <li key={iIdx}>{ing}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
                                         )}
                                     </div>
                                     <span className="font-semibold text-on-surface">
@@ -70,7 +76,6 @@ export default function OrderDetailsModal({ pedido, onClose }: OrderDetailsModal
                         </ul>
                     </div>
 
-                    {/* Summary */}
                     <div className="bg-surface-container-low p-4 rounded-xl flex flex-col gap-2 mt-2">
                         <div className="flex justify-between text-body-md text-on-surface-variant">
                             <span>Subtotal</span>
@@ -90,7 +95,6 @@ export default function OrderDetailsModal({ pedido, onClose }: OrderDetailsModal
                         </div>
                     </div>
 
-                    {/* Notes */}
                     {pedido.notas && (
                         <div className="bg-secondary-container/20 p-4 rounded-lg border border-secondary-container/30">
                             <h4 className="text-label-sm uppercase tracking-wider text-on-surface-variant mb-2">Notas del Cliente</h4>

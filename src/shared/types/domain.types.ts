@@ -62,6 +62,7 @@ export interface DetallePedidoRead {
   precio_snapshot: number;
   subtotal_snapshot: number;
   personalizacion?: number[] | null;
+  personalizacion_snapshot?: string[] | null;
   created_at: string;
 }
 
