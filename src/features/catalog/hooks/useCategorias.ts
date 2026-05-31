@@ -7,7 +7,7 @@ export const useCategorias = () => {
         {
             queryKey: ['categorias'],
             queryFn: async () => {
-                const response = await api.get('/categorias/principales');
+                const response = await api.get('/categorias?is_principal=true');
                 return response.data.data;
             }
         }
