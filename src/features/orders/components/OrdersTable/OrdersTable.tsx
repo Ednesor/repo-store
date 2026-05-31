@@ -128,7 +128,10 @@ export default function OrdersTable({ pedidos }: OrdersTableProps) {
       <CancelOrderModal
         key={pedidoToCancel || 'closed'}
         pedidoId={pedidoToCancel}
-        onClose={() => setPedidoToCancel(null)}
+        onClose={() => {
+          setPedidoToCancel(null);
+          cancelOrderMutation.reset();
+        }}
         onConfirm={(motivo) => {
           if (pedidoToCancel) {
             cancelOrderMutation.mutate(
@@ -139,6 +142,11 @@ export default function OrdersTable({ pedidos }: OrdersTableProps) {
         }}
         isPending={cancelOrderMutation.isPending}
       />
+      {cancelOrderMutation.isError && (
+        <div className="m-4 p-3 bg-error/10 border border-error/20 rounded-lg text-error text-body-sm text-center">
+          {cancelOrderMutation.error instanceof Error ? cancelOrderMutation.error.message : 'No se pudo cancelar el pedido. Puede que ya no esté en un estado válido.'}
+        </div>
+      )}
     </div>
   );
 }
