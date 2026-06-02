@@ -34,9 +34,9 @@ api.interceptors.response.use((response: AxiosResponse) => {
 }, async (error: AxiosError) => {
   if (error.response?.status === 401) {
     console.error("Sesion expirada (401), por favor inicia sesión nuevamente");
-    // TODO: agregar redireccion al login por el tema de las cookies. 
-    // TODO: Verificar el tema si se cierra sesion o se cambia de usuario. 
-    
+    //TODO : Deuda técnica - Seguridad: Atrapar el 401 no es suficiente si no se redirige al usuario a `/login` (ej: `window.location.href = '/login'`). 
+    // Además, el repo-store carece por completo de manejo de estado global (Zustand/Context) para saber si hay una sesión activa, 
+    // lo que permite a usuarios anónimos navegar por rutas privadas y romper la app.
   }
   return Promise.reject(error);
 })

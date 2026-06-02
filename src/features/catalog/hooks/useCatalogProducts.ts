@@ -10,6 +10,7 @@ export const useCatalogProducts = (categoriaIds: number[] = []) => {
                 params: {
                     // Le mandamos el array. Si está vacío, le mandamos undefined para que no ensucie la URL.
                     categoria_ids: categoriaIds.length > 0 ? categoriaIds : undefined,
+                    //TODO : Deuda técnica - El backend espera "disponible: true" (boolean) o "estado", no "include_only_active". Este filtro está fallando silenciosamente.
                     include_only_active: true
                 }
             });

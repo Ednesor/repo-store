@@ -18,6 +18,7 @@ export default function Router() {
         <Routes>
           <Route path="/" element={<CatalogPage />} />
           <Route path="/cart" element={<CartPage />} />
+          {/* //TODO : Deuda técnica - Seguridad: Las rutas de checkout y pedidos están completamente expuestas. Cualquier usuario anónimo puede ingresar a /checkout o /mis-pedidos escribiéndolo en la URL. Falta implementar un `<ProtectedRoute>` que verifique si hay sesión activa. */}
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/mis-pedidos" element={<OrdersPage />} />
           <Route path="/pedidos/:id" element={<OrderDetailPage />} />
