@@ -33,10 +33,8 @@ api.interceptors.response.use((response: AxiosResponse) => {
   return response;
 }, async (error: AxiosError) => {
   if (error.response?.status === 401) {
+    //TODO : Feature pendiente - El interceptor de 401 solo loguea a consola pero no redirige a /login. Cuando se implemente el AuthStore en el store, agregar `window.location.href = '/login'` o similar.
     console.error("Sesion expirada (401), por favor inicia sesión nuevamente");
-    //TODO : Deuda técnica - Seguridad: Atrapar el 401 no es suficiente si no se redirige al usuario a `/login` (ej: `window.location.href = '/login'`). 
-    // Además, el repo-store carece por completo de manejo de estado global (Zustand/Context) para saber si hay una sesión activa, 
-    // lo que permite a usuarios anónimos navegar por rutas privadas y romper la app.
   }
   return Promise.reject(error);
 })

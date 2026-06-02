@@ -12,6 +12,7 @@ export default function LoginPage() {
         formData.append('username', values.email);
         formData.append('password', values.password);
 
+        //TODO : Feature pendiente - Después del login solo se navega a `/` pero no se guarda estado de sesión. Cuando se implemente el AuthStore en el store, acá se debe llamar a `authStore.setSession()` para persistir la sesión.
         loginMutation.mutate(formData, {
             onSuccess: () => navigate('/')
         });

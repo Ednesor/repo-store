@@ -6,6 +6,7 @@ export function useOrders() {
     return useQuery<Pedido[]>({
         queryKey: ['pedidos'],
         queryFn: async () => {
+            //TODO : Feature pendiente - Usa `/pedidos/publico/mis-pedidos` porque el store no tiene auth. Migrar a `/pedidos/mis-pedidos` cuando se implemente el AuthStore.
             const { data: responseData } = await api.get('/pedidos/publico/mis-pedidos');
             const pedidosArray = responseData.data || [];
             return pedidosArray.sort((a: Pedido, b: Pedido) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());

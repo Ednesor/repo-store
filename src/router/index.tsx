@@ -18,7 +18,7 @@ export default function Router() {
         <Routes>
           <Route path="/" element={<CatalogPage />} />
           <Route path="/cart" element={<CartPage />} />
-          {/* //TODO : Deuda técnica - Seguridad: Las rutas de checkout y pedidos están completamente expuestas. Cualquier usuario anónimo puede ingresar a /checkout o /mis-pedidos escribiéndolo en la URL. Falta implementar un `<ProtectedRoute>` que verifique si hay sesión activa. */}
+          {/* //TODO : Feature pendiente - Las rutas /checkout y /mis-pedidos están sin protección de autenticación porque el store todavía no tiene su AuthStore implementado. Está planificado agregarlo. Mientras tanto, el backend expone endpoints `/pedidos/publico` para que el store funcione en modo MVP. */}
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/mis-pedidos" element={<OrdersPage />} />
           <Route path="/pedidos/:id" element={<OrderDetailPage />} />
