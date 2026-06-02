@@ -6,7 +6,6 @@ import Modal from '../../../../shared/components/Modal';
 interface ProductModalProps {
     producto: Producto | null;
     onClose: () => void;
-    onAddToCart: (producto: Producto, cantidad: number, personalizacion: number[]) => void;
 }
 
 interface IngredientOptionProps {
@@ -32,10 +31,11 @@ function IngredientOption({ ingrediente, isRemoved, onToggle }: IngredientOption
     );
 }
 
-export default function ProductModal({ producto, onClose, onAddToCart }: ProductModalProps) {
+export default function ProductModal({ producto, onClose }: ProductModalProps) {
     const [cantidad, setCantidad] = useState(1);
     const [ingredientesRemovidos, setIngredientesRemovidos] = useState<number[]>([]);
 
+    const addItem = useCartStore(state => state.addItem);
     const getCantidadDeProducto = useCartStore(state => state.getCantidadDeProducto);
 
     // Si no hay producto, el modal no se renderiza (retorna null)
@@ -151,7 +151,7 @@ export default function ProductModal({ producto, onClose, onAddToCart }: Product
                         <button
                             disabled={sinStock}
                             onClick={() => {
-                                onAddToCart(producto, cantidad, ingredientesRemovidos);
+                                addItem(producto, cantidad, ingredientesRemovidos);
                                 onClose();
                             }}
                             className={`w-full h-[44px] rounded flex justify-center items-center gap-2 text-body-md font-semibold transition-colors duration-200 cursor-pointer ${sinStock ? 'bg-surface-variant text-on-surface-variant cursor-not-allowed' : 'bg-primary hover:bg-primary-container text-on-primary'

@@ -15,7 +15,6 @@ export default function CatalogPage() {
   const { data: productos = [], isLoading, isError } = useCatalogProducts(categoriasSeleccionadas);
   useCartStore((state) => state.items);
   const getCantidadDeProducto = useCartStore((state) => state.getCantidadDeProducto);
-  const addItem = useCartStore((state) => state.addItem);
 
   // null significa que el modal está cerrado. 
   // Si tiene un Producto, abrimos el modal con esos datos.
@@ -79,9 +78,6 @@ export default function CatalogPage() {
         key={openModal?.id || 'closed'}
         producto={openModal}
         onClose={() => setOpenModal(null)}
-        onAddToCart={(producto, cantidad, personalizacion) => {
-          addItem(producto, cantidad, personalizacion);
-        }}
       />
     </div>
   );
