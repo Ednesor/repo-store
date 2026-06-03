@@ -24,6 +24,8 @@ export default function CheckoutForm({ onSuccess }: CheckoutFormProps) {
         onSubmit: async ({ value }) => {
             const notas_cliente = `Nombre: ${value.nombre} | Dirección: ${value.direccion} | Tel: ${value.telefono}`;
             
+            //TODO : Deuda técnica - El método de pago está hardcodeado a "EFECTIVO" y `direccion_id` a null. Cuando se implementen los módulos de pagos y direcciones en el backend, estos valores deben venir del usuario autenticado en lugar de estar fijos.
+            //TODO : BUG GRAVE - Los datos del cliente (nombre, dirección, teléfono) se concatenan en el campo `notas` del pedido en lugar de usar los campos diseñados para eso (`direccion_id` y los datos del usuario autenticado). Esto es un workaround frágil que mezcla datos estructurados con texto libre.
             const pedido = {
                 direccion_id: null,
                 forma_pago_codigo: 'EFECTIVO',

@@ -33,10 +33,8 @@ api.interceptors.response.use((response: AxiosResponse) => {
   return response;
 }, async (error: AxiosError) => {
   if (error.response?.status === 401) {
+    //TODO : Feature pendiente - El interceptor de 401 solo loguea a consola pero no redirige a /login. Cuando se implemente el AuthStore en el store, agregar `window.location.href = '/login'` o similar.
     console.error("Sesion expirada (401), por favor inicia sesión nuevamente");
-    // TODO: agregar redireccion al login por el tema de las cookies. 
-    // TODO: Verificar el tema si se cierra sesion o se cambia de usuario. 
-    
   }
   return Promise.reject(error);
 })
