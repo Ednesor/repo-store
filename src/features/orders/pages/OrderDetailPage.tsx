@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useOrderById } from '../hooks/useOrders';
+import { useOrders } from '../hooks/useOrders';
 import { useCatalogProducts } from '../../catalog/hooks/useCatalogProducts';
 import type { DetallePedidoRead } from '../../../shared/types/domain.types';
 
@@ -7,7 +7,8 @@ export default function OrderDetailPage() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
 
-    const { data: pedido, isLoading, isError } = useOrderById(id || '');
+    // Hook unificado para órdenes, pasando el ID
+    const { singleOrder: pedido, isLoading, isError } = useOrders({ id });
     // Traemos el catálogo para cruzar los IDs de personalización con los nombres de ingredientes
     const { data: productos } = useCatalogProducts();
 

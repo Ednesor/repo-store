@@ -10,8 +10,7 @@ export const useCatalogProducts = (categoriaIds: number[] = []) => {
                 params: {
                     // Le mandamos el array. Si está vacío, le mandamos undefined para que no ensucie la URL.
                     categoria_ids: categoriaIds.length > 0 ? categoriaIds : undefined,
-                    //TODO : BUG GRAVE - `include_only_active` no existe en el backend. El backend espera `disponible: true` (boolean). Este parámetro está siendo completamente ignorado, por lo que el catálogo muestra TODOS los productos (incluyendo los deshabilitados).
-                    include_only_active: true
+                    disponible: true
                 }
             });
             return response.data.data;

@@ -78,3 +78,20 @@ export interface Pedido {
   created_at: string;
   items: DetallePedidoRead[];
 }
+
+export interface Direccion {
+  id: number;
+  usuario_id: number;
+  alias?: string | null;
+  linea1: string;
+  linea2?: string | null;
+  ciudad: string;
+  provincia?: string | null;
+  codigo_postal?: string | null;
+  es_principal: boolean;
+}
+
+// Reutilizamos la interfaz base sacando los campos que el backend genera solos
+export type DireccionCreate = Omit<Direccion, 'id' | 'usuario_id' | 'es_principal'>;
+// Update es igual a Create pero todos los campos son opcionales
+export type DireccionUpdate = Partial<DireccionCreate>;
