@@ -2,7 +2,7 @@ import { useOrders } from '../hooks/useOrders';
 import OrdersTable from '../components/OrdersTable/OrdersTable';
 
 export default function OrdersPage() {
-  const { data: pedidos, isLoading, isError } = useOrders();
+  const { orders: pedidos, isLoading, isError } = useOrders();
 
   if (isLoading) {
     return (

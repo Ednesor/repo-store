@@ -1,20 +1,29 @@
 import { useNavigate } from "react-router-dom";
-import { useLogin } from "../hooks/useLogin";
+import { useAuth } from "../hooks/useAuth";
 import LoginForm from "../components/LoginForm/LoginForm";
 import type { LoginPayload } from "../types";
+import api from '../../../shared/services/api';
+import { useAuthStore } from '../../../store/useAuthStore';
 
 export default function LoginPage() {
     const navigate = useNavigate();
-    const loginMutation = useLogin();
+    const { login, isLoggingIn, loginError } = useAuth();
 
     const handleLogin = (values: LoginPayload) => {
         const formData = new URLSearchParams();
         formData.append('username', values.email);
         formData.append('password', values.password);
 
-        //TODO : Feature pendiente - Después del login solo se navega a `/` pero no se guarda estado de sesión. Cuando se implemente el AuthStore en el store, acá se debe llamar a `authStore.setSession()` para persistir la sesión.
-        loginMutation.mutate(formData, {
-            onSuccess: () => navigate('/')
+        login(formData, {
+            onSuccess: async () => {
+                try {
+                    const response = await api.get('/usuarios/me');
+                    useAuthStore.getState().setSession(response.data);
+                    navigate('/');
+                } catch (error) {
+                    console.error("Error al traer el perfil:", error);
+                }
+            }
         });
     };
 
@@ -31,21 +40,21 @@ export default function LoginPage() {
                     <h1 className="font-headline-lg text-headline-lg text-on-surface mb-2">Welcome Back</h1>
                     <p className="font-body-md text-body-md text-on-surface-variant">Sign in</p>
                 </div>
-                
-                {loginMutation.isError && (
+
+                {loginError && (
                     <div className="mb-4 p-3 bg-error/10 border border-error/20 rounded-lg text-error text-body-sm text-center">
                         Credenciales incorrectas. Intentá de nuevo.
                     </div>
                 )}
-                
-                <LoginForm 
-                    onSubmit={handleLogin} 
-                    isSubmitting={loginMutation.isPending} 
+
+                <LoginForm
+                    onSubmit={handleLogin}
+                    isSubmitting={isLoggingIn}
                 />
-                
+
                 <div className="mt-lg text-center">
                     <p className="font-body-md text-body-md text-on-surface-variant">
-                        New to Retail Precision? 
+                        New to Retail Precision?
                         <a className="text-primary-container font-bold hover:underline decoration-2 underline-offset-4 ml-1" href="/register">Sign Up</a>
                     </p>
                 </div>

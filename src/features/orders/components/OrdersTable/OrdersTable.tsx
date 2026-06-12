@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-table';
 import type { Pedido } from '../../../../shared/types/domain.types';
 import CancelOrderModal from '../CancelOrderModal/CancelOrderModal';
-import { useCancelOrder } from '../../hooks/useOrders';
+import { useOrders } from '../../hooks/useOrders';
 
 interface OrdersTableProps {
   pedidos: Pedido[];
@@ -17,7 +17,7 @@ interface OrdersTableProps {
 export default function OrdersTable({ pedidos }: OrdersTableProps) {
   const navigate = useNavigate();
   const [pedidoToCancel, setPedidoToCancel] = useState<number | null>(null);
-  const cancelOrderMutation = useCancelOrder();
+  const { cancel, isCanceling, cancelError, resetCancel } = useOrders();
   const columnHelper = createColumnHelper<Pedido>();
 
   const columns = [
@@ -67,7 +67,7 @@ export default function OrdersTable({ pedidos }: OrdersTableProps) {
                   e.stopPropagation();
                   setPedidoToCancel(pedido.id);
                 }}
-                disabled={cancelOrderMutation.isPending && cancelOrderMutation.variables?.pedidoId === pedido.id}
+                disabled={isCanceling && pedidoToCancel === pedido.id}
                 className="text-error hover:bg-error-container px-3 py-1.5 rounded-lg transition-colors font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 title="Cancelar Pedido"
               >
@@ -130,21 +130,23 @@ export default function OrdersTable({ pedidos }: OrdersTableProps) {
         pedidoId={pedidoToCancel}
         onClose={() => {
           setPedidoToCancel(null);
-          cancelOrderMutation.reset();
+          resetCancel();
         }}
-        onConfirm={(motivo) => {
+        onConfirm={async (motivo) => {
           if (pedidoToCancel) {
-            cancelOrderMutation.mutate(
-              { pedidoId: pedidoToCancel, motivo },
-              { onSuccess: () => setPedidoToCancel(null) }
-            );
+            try {
+              await cancel({ pedidoId: pedidoToCancel, motivo });
+              setPedidoToCancel(null);
+            } catch (err) {
+              console.error(err);
+            }
           }
         }}
-        isPending={cancelOrderMutation.isPending}
+        isPending={isCanceling}
       />
-      {cancelOrderMutation.isError && (
+      {cancelError && (
         <div className="m-4 p-3 bg-error/10 border border-error/20 rounded-lg text-error text-body-sm text-center">
-          {cancelOrderMutation.error instanceof Error ? cancelOrderMutation.error.message : 'No se pudo cancelar el pedido. Puede que ya no esté en un estado válido.'}
+          {cancelError instanceof Error ? cancelError.message : 'No se pudo cancelar el pedido. Puede que ya no esté en un estado válido.'}
         </div>
       )}
     </div>

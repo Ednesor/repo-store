@@ -6,6 +6,8 @@ import OrdersPage from '../features/orders/pages/OrdersPage';
 import OrderDetailPage from '../features/orders/pages/OrderDetailPage';
 import LoginPage from '../features/login/pages/LoginPage';
 import RegisterPage from '../features/login/pages/RegisterPage';
+import ProtectedRoute from './components/ProtectedRoute';
+import ProfilePage from '../features/user/pages/ProfilePage';
 
 import Navbar from '../shared/components/navbar'
 import Footer from '../shared/components/Footer'
@@ -16,14 +18,21 @@ export default function Router() {
       <Navbar />
       <main className="flex-grow flex flex-col w-full max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-lg">
         <Routes>
+
+          {/* Rutas Públicas */}
           <Route path="/" element={<CatalogPage />} />
           <Route path="/cart" element={<CartPage />} />
-          {/* //TODO : Feature pendiente - Las rutas /checkout y /mis-pedidos están sin protección de autenticación porque el store todavía no tiene su AuthStore implementado. Está planificado agregarlo. Mientras tanto, el backend expone endpoints `/pedidos/publico` para que el store funcione en modo MVP. */}
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/mis-pedidos" element={<OrdersPage />} />
-          <Route path="/pedidos/:id" element={<OrderDetailPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+
+          {/* Rutas Privadas */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/mis-pedidos" element={<OrdersPage />} />
+            <Route path="/pedidos/:id" element={<OrderDetailPage />} />
+            <Route path="/perfil" element={<ProfilePage />} />
+          </Route>
+
         </Routes>
       </main>
       <Footer />
