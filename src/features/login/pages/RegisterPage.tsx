@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import { useRegister } from "../hooks/useRegister";
+import { useAuth } from "../hooks/useAuth";
 import RegisterForm from "../components/RegisterForm/RegisterForm";
 import type { RegisterPayload } from "../types";
 
 export default function RegisterPage() {
     const navigate = useNavigate();
-    const registerMutation = useRegister();
+    const { register, isRegistering, registerError } = useAuth();
 
     const handleRegister = (values: RegisterPayload) => {
-        registerMutation.mutate(values, {
+        register(values, {
             onSuccess: () => navigate('/login')
         });
     };
@@ -31,7 +31,7 @@ export default function RegisterPage() {
                             <p className="font-body-md text-body-md text-on-surface-variant">Join our community of gourmet artisans and curators.</p>
                         </div>
                         
-                        {registerMutation.isError && (
+                        {registerError && (
                             <div className="mb-4 p-3 bg-error/10 border border-error/20 rounded-lg text-error text-body-sm text-center">
                                 Error al registrarse. Verificá los datos e intentá de nuevo.
                             </div>
@@ -39,7 +39,7 @@ export default function RegisterPage() {
                         
                         <RegisterForm 
                             onSubmit={handleRegister} 
-                            isSubmitting={registerMutation.isPending} 
+                            isSubmitting={isRegistering} 
                         />
                         
                         {/* Footer Links */}
