@@ -27,8 +27,7 @@ export function useCheckout() {
   return useMutation({
     mutationFn: async (pedido: PedidoPayload) => {
       try {
-        //TODO : Feature pendiente - El checkout usa `/pedidos/publico` porque el store todavía no tiene autenticación implementada. Cuando se agregue el AuthStore y ProtectedRoute, migrar a `/pedidos/` con la cookie JWT.
-        const response = await api.post('/pedidos/publico', pedido);
+        const response = await api.post('/pedidos/', pedido);
         return response.data;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
