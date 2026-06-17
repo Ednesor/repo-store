@@ -13,7 +13,7 @@ export const useCatalogProducts = (categoriaIds: number[] = []) => {
                     disponible: true
                 }
             });
-            return response.data.data;
+            return response.data.items;
         },
         /*
         keepPreviousData, en caso de que el usuario seleccione otra categoría, 
