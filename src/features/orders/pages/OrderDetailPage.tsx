@@ -1,16 +1,31 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useOrders } from '../hooks/useOrders';
 import { useCatalogProducts } from '../../catalog/hooks/useCatalogProducts';
+import { useOrderStatusWS } from '../hooks/useOrderStatusWS';
+import { useWsStore } from '../../../store/wsStore';
 import type { DetallePedidoRead } from '../../../shared/types/domain.types';
 
 export default function OrderDetailPage() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
 
-    // Hook unificado para órdenes, pasando el ID
+    // Hook unificado para órdenes, pasando el ID del pedido sacado de la URL
     const { singleOrder: pedido, isLoading, isError } = useOrders({ id });
-    // Traemos el catálogo para cruzar los IDs de personalización con los nombres de ingredientes
-    const { data: productos } = useCatalogProducts();
+    
+    // Traemos el catálogo para cruzar los IDs de personalización con los nombres de ingredientes reales.
+    // Como ahora la API es paginada (devuelve { items: [], total: N ... }), 
+    // necesitamos sacarle la propiedad .items o que sea un array vacío por defecto.
+    const { data: catalogResponse } = useCatalogProducts();
+    const productos = catalogResponse || [];
+
+    // Acá integramos la magia en tiempo real. 
+    // Al invocar este hook, si el pedidoId existe, nos suscribimos al canal de WebSocket de este pedido.
+    // Si la cocina aprieta un botón para cambiar el estado, se invalidará la caché de React Query
+    // y la variable 'pedido' (de la línea 15) se va a actualizar sola sin recargar la página.
+    useOrderStatusWS(id ? Number(id) : undefined);
+    
+    // Estado global para saber si el WebSocket está vivo o desconectado
+    const isConnected = useWsStore((state) => state.isConnected);
 
     if (isLoading) {
         return (
@@ -40,7 +55,20 @@ export default function OrderDetailPage() {
         <div className="w-full max-w-3xl mx-auto flex flex-col h-full bg-surface rounded-2xl shadow-sm border border-outline-variant overflow-hidden mt-8">
             <div className="flex justify-between items-center p-6 border-b border-outline-variant bg-surface-container-low">
                 <div>
-                    <h2 className="text-headline-sm font-semibold text-on-surface">Detalle del Pedido #{pedido.id}</h2>
+                    <div className="flex items-center gap-3">
+                        <h2 className="text-headline-sm font-semibold text-on-surface">Detalle del Pedido #{pedido.id}</h2>
+                        {isConnected ? (
+                            <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full flex items-center gap-1">
+                                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                En vivo
+                            </span>
+                        ) : (
+                            <span className="px-2 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-full flex items-center gap-1">
+                                <span className="w-2 h-2 rounded-full bg-red-500"></span>
+                                Desconectado
+                            </span>
+                        )}
+                    </div>
                     <p className="text-body-sm text-on-surface-variant mt-1">
                         Creado el {new Date(pedido.created_at).toLocaleString()}
                     </p>
@@ -84,11 +112,16 @@ export default function OrderDetailPage() {
                                     {item.personalizacion && item.personalizacion.length > 0 && (
                                         <p className="text-label-sm text-error mt-1 flex items-center gap-1">
                                             <span className="material-symbols-outlined text-[14px]">remove_circle_outline</span>
-                                            Sin: {productos
+                                            Sin: {productos.length > 0
+                                                // Mapeamos los IDs de los ingredientes restados para buscar sus nombres.
+                                                // 1. Buscamos el producto en el catálogo.
+                                                // 2. Buscamos el ingrediente dentro de ese producto.
+                                                // 3. Devolvemos su nombre.
                                                 ? item.personalizacion
-                                                    .map(id => productos.find(p => p.id === item.producto_id)?.ingredientes?.find(i => i.id === id)?.nombre)
-                                                    .filter(Boolean)
-                                                    .join(', ')
+                                                    .map(id => productos.find(p => p.id === item.producto_id)?.ingredientes?.find((i: { id: number; nombre: string }) => i.id === id)?.nombre)
+                                                    .filter(Boolean) // Quitamos los nulos o undefined
+                                                    .join(', ') // Unimos todos con comas
+                                                // Fallback por si los productos todavía no cargaron del catálogo
                                                 : `${item.personalizacion.length} ingredientes`}
                                         </p>
                                     )}
