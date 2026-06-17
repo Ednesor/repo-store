@@ -8,6 +8,8 @@ import LoginPage from '../features/login/pages/LoginPage';
 import RegisterPage from '../features/login/pages/RegisterPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import ProfilePage from '../features/user/pages/ProfilePage';
+import PaymentPage from '../features/checkout/pages/PaymentPage';
+import PaymentFeedbackPage from '../features/checkout/pages/PaymentFeedbackPage';
 
 import Navbar from '../shared/components/navbar'
 import Footer from '../shared/components/Footer'
@@ -28,6 +30,8 @@ export default function Router() {
           {/* Rutas Privadas */}
           <Route element={<ProtectedRoute />}>
             <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/payment/:id" element={<PaymentPage />} />
+            <Route path="/payment/feedback/:id" element={<PaymentFeedbackPage />} />
             <Route path="/mis-pedidos" element={<OrdersPage />} />
             <Route path="/pedidos/:id" element={<OrderDetailPage />} />
             <Route path="/perfil" element={<ProfilePage />} />

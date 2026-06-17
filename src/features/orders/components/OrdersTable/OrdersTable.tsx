@@ -55,11 +55,22 @@ export default function OrdersTable({ pedidos }: OrdersTableProps) {
                 e.stopPropagation();
                 navigate(`/pedidos/${pedido.id}`);
               }}
-              className="text-orange-600 hover:bg-orange-100 px-4 py-1.5 rounded-lg transition-colors font-bold text-sm tracking-wide"
-              title="Ver Detalles"
+              className="text-orange-600 border border-orange-600 hover:bg-orange-100 px-4 py-1.5 rounded-lg transition-colors font-bold text-sm tracking-wide"              title="Ver Detalles"
             >
               Ver
             </button>
+
+            {pedido.estado_codigo === 'PENDIENTE' && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/payment/${pedido.id}`);
+                }}
+                className="text-primary border border-primary hover:bg-primary/10 px-4 py-1.5 rounded-lg transition-colors font-bold text-sm tracking-wide"
+              >
+                Reintentar Pago
+              </button>
+            )}
 
             {canCancel && (
               <button
@@ -68,7 +79,7 @@ export default function OrdersTable({ pedidos }: OrdersTableProps) {
                   setPedidoToCancel(pedido.id);
                 }}
                 disabled={isCanceling && pedidoToCancel === pedido.id}
-                className="text-error hover:bg-error-container px-3 py-1.5 rounded-lg transition-colors font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                className="text-error border border-error hover:bg-error-container px-4 py-1.5 rounded-lg transition-colors font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 title="Cancelar Pedido"
               >
                 Cancelar Pedido
