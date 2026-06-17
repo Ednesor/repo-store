@@ -22,8 +22,11 @@ export default function CatalogPage() {
 
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | 'none'>('none');
 
+  // TODO: Reemplazar este div por Skeleton loaders (Rúbrica: Catálogo con skeleton)
   if (isLoading) return <div className="text-body-lg text-on-surface-variant flex justify-center py-20">Cargando el menú...</div>;
   if (isError) return <div className="text-body-lg text-error flex justify-center py-20">Error al cargar los productos</div>;
+
+  // TODO: Si productos.length === 0 mostrar Estado Vacío en vez de dejar la pantalla en blanco (Rúbrica: Estados vacíos)
 
   const sortedProductos = [...productos].sort((a, b) => {
     if (sortOrder === 'asc') return Number(a.precio_base) - Number(b.precio_base);
@@ -37,9 +40,11 @@ export default function CatalogPage() {
         <div>
           <h1 className="text-headline-lg font-headline-lg text-on-surface">Gourmet Menu</h1>
           <p className="text-body-md font-body-md text-on-surface-variant mt-1">Explore our chef-crafted selections.</p>
+          {/* TODO: Implementar búsqueda por texto con debounce (Rúbrica: Catálogo con debounce) */}
         </div>
 
         <div className="flex items-center gap-2">
+          {/* TODO: Implementar paginación (Rúbrica: Catálogo con paginación) */}
           <select
             className="bg-surface-container-low border border-outline-variant text-on-surface text-body-md rounded-lg px-3 py-2 focus:ring-1 focus:ring-primary focus:border-primary outline-none cursor-pointer"
             value={sortOrder}

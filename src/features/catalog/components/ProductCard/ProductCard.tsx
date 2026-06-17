@@ -8,6 +8,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ producto, cantidadEnCarrito, onSelect }: ProductCardProps) {
     const sinStock = cantidadEnCarrito >= producto.stock_cantidad;
+    // TODO: Usar url de cloudinary e inyectar las transformaciones 'f_auto,q_auto,c_fill' antes de renderizar (Rúbrica: Cloudinary en ProductCard)
     const imagen = producto.imagenes_url?.[0] || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=500&auto=format&fit=crop';
 
     return (
