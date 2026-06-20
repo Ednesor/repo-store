@@ -11,11 +11,19 @@ export default function PaymentFeedbackPage() {
 
     // MP devuelve 'approved' cuando el pago es exitoso
     const isSuccess = status === 'approved' || status === 'success';
+    const isFailure = status === 'rejected' || status === 'failure' || status === 'null';
+    const isPending = status === 'pending' || status === 'in_process';
 
     return (
         <div className="flex flex-col items-center justify-center min-h-[50vh] text-center p-4">
-            <h1 className={`text-4xl font-bold mb-4 ${isSuccess ? 'text-green-600' : 'text-orange-500'}`}>
-                {isSuccess ? '¡Pago Exitoso!' : 'Estado del Pago'}
+            <h1 className={`text-4xl font-bold mb-4 ${
+                isSuccess ? 'text-green-600' : 
+                isFailure ? 'text-red-600' : 'text-orange-500'
+            }`}>
+                {isSuccess && '¡Pago Exitoso!'}
+                {isFailure && 'Pago Rechazado o Fallido'}
+                {isPending && 'Pago en Proceso'}
+                {!isSuccess && !isFailure && !isPending && 'Estado del Pago'}
             </h1>
 
             <p className="text-xl font-medium mb-2">Pedido #{id}</p>
@@ -25,10 +33,10 @@ export default function PaymentFeedbackPage() {
             )}
 
             <p className="mb-8 text-lg">
-                {status === 'pending' && 'Tu pago está siendo procesado. Te avisaremos cuando se acredite.'}
-                {status === 'rejected' && 'Hubo un problema con tu pago. Por favor, intentá nuevamente.'}
+                {isPending && 'Tu pago está siendo procesado por MercadoPago. Te avisaremos cuando se acredite.'}
+                {isFailure && 'Hubo un problema con tu pago o fue rechazado. Por favor, verificá tus datos o intentá con otro medio de pago.'}
                 {isSuccess && '¡Tu pedido ya se está preparando!'}
-                {(!status || status === 'null') && 'No se pudo obtener el estado del pago.'}
+                {(!status) && 'No se pudo obtener el estado del pago.'}
             </p>
 
             <button
