@@ -6,7 +6,6 @@ export type OrderEventType =
     | "NUEVO_PEDIDO"
     | "PEDIDO_CONFIRMADO"
     | "PEDIDO_EN_PREPARACION"
-    | "PEDIDO_EN_CAMINO"
     | "PEDIDO_CANCELADO"
     | "ESTADO_ACTUALIZADO";
 

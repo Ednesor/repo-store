@@ -27,7 +27,6 @@ export function useOrderStatusWS(pedidoId: number | undefined) {
       socket.on("NUEVO_PEDIDO", invalidate),
       socket.on("PEDIDO_CONFIRMADO", invalidate),
       socket.on("PEDIDO_EN_PREPARACION", invalidate),
-      socket.on("PEDIDO_EN_CAMINO", invalidate),
       socket.on("PEDIDO_CANCELADO", invalidate),
       socket.on("ESTADO_ACTUALIZADO", invalidate),
     ];
