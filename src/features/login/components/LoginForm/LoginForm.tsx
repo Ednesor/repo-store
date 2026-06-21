@@ -26,6 +26,15 @@ export default function LoginForm({ onSubmit, isSubmitting }: LoginFormProps) {
                 form.handleSubmit();
             }}
         >
+            <div className="bg-surface-container border border-outline-variant/30 rounded-lg p-3 mb-4 space-y-2">
+                <p className="text-body-sm font-bold text-on-surface-variant text-center">Acceso Rápido (Testing)</p>
+                <div className="flex flex-wrap gap-2 justify-center">
+                    <button type="button" onClick={() => { form.setFieldValue('email', 'admin@foodstore.com'); form.setFieldValue('password', 'admin123'); }} className="px-3 py-1 bg-primary/10 text-primary text-label-sm rounded-full hover:bg-primary/20 transition-colors">Admin</button>
+                    <button type="button" onClick={() => { form.setFieldValue('email', 'pedidos@foodstore.com'); form.setFieldValue('password', 'pedidos123'); }} className="px-3 py-1 bg-tertiary/10 text-tertiary text-label-sm rounded-full hover:bg-tertiary/20 transition-colors">Pedidos</button>
+                    <button type="button" onClick={() => { form.setFieldValue('email', 'stock@foodstore.com'); form.setFieldValue('password', 'stock123'); }} className="px-3 py-1 bg-secondary/10 text-secondary text-label-sm rounded-full hover:bg-secondary/20 transition-colors">Stock</button>
+                    <button type="button" onClick={() => { form.setFieldValue('email', 'cliente@foodstore.com'); form.setFieldValue('password', 'cliente123'); }} className="px-3 py-1 bg-primary-container/30 text-on-primary-container text-label-sm rounded-full hover:bg-primary-container/50 transition-colors border border-primary/20">Cliente</button>
+                </div>
+            </div>
             <form.Field
                 name="email"
                 children={(field) => (
