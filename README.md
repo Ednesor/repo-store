@@ -1,5 +1,9 @@
 # Retail Precision - Store App (Parcial 2 - PROG4)
+--
 
+video final: https://drive.google.com/file/d/1TN4jfbk-sBAEybgjCK4OUvrTVEcnvxwF/view?usp=sharing
+
+--
 > 🎥 **Video de Presentación:** LINK DE YOUTUBE [ > ENTRA ACÁ <](https://youtu.be/oqgT0LUqdwQ)
 
 Aplicación web e-commerce completa con arquitectura orientada a features y diseño *premium* responsivo. Construida con React, TypeScript y Tailwind CSS v4.
